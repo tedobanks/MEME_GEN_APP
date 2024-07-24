@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:meme_gen_app/screens/homepage.dart';
 import 'package:meme_gen_app/screens/info_collection.dart';
 import 'package:meme_gen_app/services/remote_service.dart';
+import 'package:meme_gen_app/static/categories_list.dart';
+import 'package:meme_gen_app/static/dimension.dart';
 import 'package:meme_gen_app/static/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,8 +12,33 @@ class AppProvider extends ChangeNotifier {
   bool isLastPage = false;
   bool isLoaded = false;
   String userName = '';
+  String apiUrl =
+      'https://api.humorapi.com/memes/random?api-key=470eacd26be341318de1821e09269e0b';
+  String baseUrl = "https://api.humorapi.com/memes/";
+  String endPoint = "random";
+  String apiKeyPhrase = "?api-key=a2439a36b3d24f7ebe62c22093a8c41f&";
+  String includetags = "include-tags=";
+  Meme? memes;
 
-  List<Meme>? memes;
+  void renew() {
+    memes = null;
+    Future.delayed(Duration(seconds: 1), () => getData());
+    notifyListeners();
+  }
+
+  void changeApiUrl(String tag) {
+    if (tag.isEmpty) {
+      tag = Categories.categoriesList.first;
+      apiUrl = baseUrl + endPoint + apiKeyPhrase + includetags + tag;
+      print(apiUrl);
+      getData();
+    }
+    memes = null;
+    apiUrl = baseUrl + endPoint + apiKeyPhrase + includetags + tag;
+    Future.delayed(Duration(seconds: 2), () => getData());
+    print(apiUrl);
+    notifyListeners();
+  }
 
   void assignLastPage(int index) {
     isLastPage = index == 2;
@@ -73,6 +100,7 @@ class AppProvider extends ChangeNotifier {
       userName = stringValue;
     }
     print(userName);
+    print(Dimensions.screenHeight);
     notifyListeners();
   }
 

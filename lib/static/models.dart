@@ -2,13 +2,12 @@
 //
 //     final meme = memeFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<Meme> memeFromJson(String str) =>
-    List<Meme>.from(json.decode(str).map((x) => Meme.fromJson(x)));
+Meme memeFromJson(String str) => Meme.fromJson(json.decode(str));
 
-String memeToJson(List<Meme> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String memeToJson(Meme data) => json.encode(data.toJson());
 
 class Meme {
   Meme({

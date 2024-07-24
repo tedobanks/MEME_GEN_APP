@@ -1,11 +1,12 @@
+import 'package:meme_gen_app/services/app_provider.dart';
 import 'package:meme_gen_app/static/models.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteService {
-  Future<List<Meme>?> getMemes() async {
+  Future<Meme?> getMemes() async {
     var client = http.Client();
-
-    var url = Uri.parse('https://api.humorapi.com/memes/random');
+    var uri = AppProvider().apiUrl;
+    var url = Uri.parse(uri);
 
     var response = await client.get(url);
 
